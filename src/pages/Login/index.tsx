@@ -1,14 +1,20 @@
 import logo from '@/assets/logo.png';
 import { Button, Card, Form, Input } from 'antd';
-import { onFinish, validationRules } from '.';
+
 import './index.scss';
+import { useLogin, validationRules } from './utils';
 const Login = () => {
+  const { onFinish } = useLogin();
   return (
     <div className='login'>
       <Card className='login-container'>
         <img className='login-logo' src={logo} alt='' />
         {/* 登录表单 */}
-        <Form validateTrigger='onBlur' onFinish={onFinish}>
+        <Form
+          validateTrigger='onBlur'
+          onFinish={onFinish}
+          initialValues={{ mobile: '13800000002', code: '246810' }}
+        >
           <Form.Item name='mobile' rules={validationRules.mobile}>
             <Input size='large' placeholder='请输入手机号' />
           </Form.Item>
