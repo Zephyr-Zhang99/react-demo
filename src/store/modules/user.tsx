@@ -1,18 +1,19 @@
 import type { FieldType } from '@/pages/Login/utils';
-import { request } from '@/utils';
+import { setToken as _setToken, request } from '@/utils';
 import { createSlice } from '@reduxjs/toolkit';
-
 const userStore = createSlice({
   // 命名空间
   name: 'user',
   //   数据状态
   initialState: {
-    token: '',
+    token: localStorage.getItem('token_key') || '',
   },
   //   同步修改
   reducers: {
     setToken(state, action) {
       state.token = action.payload;
+      // 存入本地
+      _setToken(action.payload);
     },
   },
 });

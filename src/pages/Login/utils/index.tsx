@@ -1,6 +1,7 @@
 import { fetchLogin } from '@/store/modules/user';
-import type { FormProps } from 'antd';
+import { message, type FormProps } from 'antd';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 // 校验规则
 export const validationRules = {
@@ -27,9 +28,16 @@ export type FieldType = {
 // 登录
 export const useLogin = () => {
   const dispatch = useDispatch();
-  const onFinish: FormProps<FieldType>['onFinish'] = (formValue: FieldType) => {
-    // 触发异步action
-    dispatch(fetchLogin(formValue));
+  const navigate = useNavigate();
+  const onFinish: FormProps<FieldType>['onFinish'] = async (
+    formValue: FieldType
+  ) => {
+    // 1. 触发异步action
+    await dispatch(fetchLogin(formValue));
+    // 2. 跳转到首页
+    navigate('/');
+    // 3. 提示用户
+    message.success('登录成功');
   };
 
   return { onFinish };
