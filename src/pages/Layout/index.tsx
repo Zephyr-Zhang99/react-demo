@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 import './index.scss';
 import { items, useLayout } from './utils';
 const GeekLayout = () => {
-  const { menuClick, selectedKeys, name, loginOut } = useLayout();
+  const { loginOut, selectedKeys, name, menuClick } = useLayout();
   return (
     <Layout>
       <Header className='header'>

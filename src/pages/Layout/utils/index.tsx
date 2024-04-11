@@ -22,17 +22,7 @@ export const items = [
     icon: <EditOutlined />,
   },
 ];
-
-/**
- * 使用布局的自定义钩子。
- * 该钩子不接受任何参数，并返回与布局相关的菜单点击处理函数和当前选中的菜单键。
- *
- * @returns {Object} 返回一个对象，包含两个属性：
- *  - menuClick: 菜单点击事件的处理函数，接收一个参数 `route`，当菜单项被点击时调用。
- *  - selectedKeys: 当前选中的菜单键的数组，根据当前地点路径名初始化。
- *  - name: 当前登录用户的名字。
- */
-export const useLayout = () => {
+export function useLayout() {
   const navigate = useNavigate(); // 使用react-router的useNavigate钩子，用于在应用中进行导航。
   const location = useLocation(); // 使用react-router的useLocation钩子，获取当前的地点信息。
   const dispatch = useDispatch(); // 使用react-redux的useDispatch钩子，用于派发actions。
@@ -64,6 +54,5 @@ export const useLayout = () => {
   useEffect(() => {
     dispatch(fetchUserInfo());
   }, [dispatch]); // 依赖项列表为空，表示仅在组件挂载时执行。
-
-  return { menuClick, selectedKeys, name, loginOut };
-};
+  return { loginOut, name, menuClick, selectedKeys };
+}
