@@ -1,5 +1,6 @@
+import { getProfileAPI, loginAPI } from '@/apis/user';
 import type { FieldType } from '@/pages/Login/utils';
-import { setToken as _setToken, removeToken, request } from '@/utils';
+import { setToken as _setToken, removeToken } from '@/utils';
 import { createSlice } from '@reduxjs/toolkit';
 const userStore = createSlice({
   // 命名空间
@@ -39,7 +40,7 @@ const fetchLogin: any = (loginForm: FieldType) => {
   // dispatch,用来分发action
   return async (dispatch: any) => {
     // 发送异步请求
-    const res = await request.post('/authorizations', loginForm);
+    const res = await loginAPI(loginForm);
     // 提交同步action进行token注入
     dispatch(setToken(res.data.token));
   };
@@ -48,7 +49,7 @@ const fetchLogin: any = (loginForm: FieldType) => {
 // 获取用户信息
 const fetchUserInfo: any = () => {
   return async (dispatch: any) => {
-    const res = await request.get('/user/profile');
+    const res = await getProfileAPI();
     dispatch(setUserInfo(res.data));
   };
 };
