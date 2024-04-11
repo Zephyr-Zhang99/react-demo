@@ -1,12 +1,18 @@
-import { createArticleAPI } from '@/apis/publish';
+import {
+  createArticleAPI,
+  editArticleAPI,
+  getArticleDetailAPI,
+} from '@/apis/publish';
 import { useChannel } from '@/hooks/useChannel';
 import {
+  Form,
   message,
   type FormProps,
   type RadioChangeEvent,
   type UploadProps,
 } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 // 频道列表类型
 export type Channel = {
@@ -25,6 +31,7 @@ export type FormValue = {
   title: string;
   content: string;
   channel_id: number;
+  [propName: string]: any;
 };
 
 // 创建文章的请求数据类型
@@ -37,6 +44,9 @@ export type ReqData = {
 
 // 用于管理文章表单的自定义钩子
 export function useForm() {
+  const [searchParams] = useSearchParams();
+  const articleId = searchParams.get('id');
+  const [form] = Form.useForm();
   const [imageType, setImageType] = useState(0);
   const [imageList, setImageList] = useState<any[]>([]);
 
@@ -64,13 +74,23 @@ export function useForm() {
       content,
       cover: {
         type: imageType,
-        images: imageList.map((item) => item.response.data.url),
+        images: imageList.map((item) => {
+          if (item.response) {
+            // 新增时
+            return item.response.data.url;
+          } else {
+            // 修改时
+            return item.url;
+          }
+        }),
       },
       channel_id,
     };
 
     try {
-      await createArticleAPI(reqData);
+      articleId
+        ? await editArticleAPI({ ...reqData, id: articleId })
+        : await createArticleAPI(reqData);
       message.success('发布文章成功');
       // 根据需要重置表单或导航到其他页面
     } catch (error) {
@@ -78,11 +98,28 @@ export function useForm() {
     }
   };
 
+  // 回填数据
+  const fillForm = async () => {
+    const res = await getArticleDetailAPI(articleId!);
+    const { cover, ...formValue } = res.data;
+    // 1. 回填表单数据
+    form.setFieldsValue({ ...formValue, type: cover.type });
+    // 2. 回填封面图片
+    setImageType(cover.type);
+    setImageList(cover.images.map((url: string) => ({ url })));
+  };
+
+  useEffect(() => {
+    articleId && fillForm();
+  }, []);
+
   return {
     onFinish,
     onTypeChange,
     onUploadChange,
     imageType,
     imageList,
+    form,
+    articleId,
   };
 }

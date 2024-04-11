@@ -19,8 +19,15 @@ const { Option } = Select;
 
 const Publish = () => {
   const { channels } = usePublish();
-  const { onFinish, onUploadChange, onTypeChange, imageType, imageList } =
-    useForm();
+  const {
+    onFinish,
+    onUploadChange,
+    onTypeChange,
+    imageType,
+    imageList,
+    form,
+    articleId,
+  } = useForm();
   return (
     <div className='publish'>
       <Card
@@ -28,7 +35,7 @@ const Publish = () => {
           <Breadcrumb
             items={[
               { title: <Link to={'/'}>首页</Link> },
-              { title: '发布文章' },
+              { title: `${articleId ? '编辑文章' : '发布文章'}` },
             ]}
           />
         }
@@ -38,6 +45,7 @@ const Publish = () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
           initialValues={{ type: 0 }}
+          form={form}
         >
           <Form.Item
             label='标题'

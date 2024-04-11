@@ -34,3 +34,20 @@ export function deleteArticleAPI(id: number) {
     method: 'DELETE',
   });
 }
+
+// 获取文章详情
+export function getArticleDetailAPI(articleId: string) {
+  return request({
+    url: `/mp/articles/${articleId}`,
+    method: 'GET',
+  });
+}
+
+// 编辑文章
+export function editArticleAPI(data: ReqData) {
+  return request({
+    url: `/mp/articles/${data.id}?draft=false`,
+    method: 'PUT',
+    data,
+  });
+}
