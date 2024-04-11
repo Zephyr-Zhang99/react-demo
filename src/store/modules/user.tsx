@@ -1,12 +1,14 @@
 import type { FieldType } from '@/pages/Login/utils';
-import { setToken as _setToken, request } from '@/utils';
+import { setToken as _setToken, removeToken, request } from '@/utils';
 import { createSlice } from '@reduxjs/toolkit';
 const userStore = createSlice({
   // 命名空间
   name: 'user',
-  //   数据状态
+  //  数据状态
   initialState: {
     token: localStorage.getItem('token_key') || '',
+    // 用户数据
+    userInfo: {},
   },
   //   同步修改
   reducers: {
@@ -15,13 +17,24 @@ const userStore = createSlice({
       // 存入本地
       _setToken(action.payload);
     },
+    setUserInfo(state, action) {
+      state.userInfo = action.payload;
+    },
+    clearUserInfo(state) {
+      state.token = '';
+      state.userInfo = {};
+      removeToken();
+    },
   },
 });
+
 // 解构actionCreate
-const { setToken } = userStore.actions;
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions;
+
 // 获取reducer函数
 const userReducer = userStore.reducer;
-// 异步方法
+
+// 登录异步方法
 const fetchLogin: any = (loginForm: FieldType) => {
   // dispatch,用来分发action
   return async (dispatch: any) => {
@@ -31,5 +44,13 @@ const fetchLogin: any = (loginForm: FieldType) => {
     dispatch(setToken(res.data.token));
   };
 };
-export { fetchLogin, setToken };
+
+// 获取用户信息
+const fetchUserInfo: any = () => {
+  return async (dispatch: any) => {
+    const res = await request.get('/user/profile');
+    dispatch(setUserInfo(res.data));
+  };
+};
+export { clearUserInfo, fetchLogin, fetchUserInfo, setToken, setUserInfo };
 export default userReducer;
