@@ -13,8 +13,8 @@ import {
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Link } from 'react-router-dom';
+import { useForm, usePublish } from './hooks';
 import './index.scss';
-import { useForm, usePublish } from './utils';
 const { Option } = Select;
 
 const Publish = () => {

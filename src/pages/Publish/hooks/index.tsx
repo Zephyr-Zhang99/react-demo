@@ -1,11 +1,12 @@
-import { createArticleAPI, getChannelAPI } from '@/apis/publish';
+import { createArticleAPI } from '@/apis/publish';
+import { useChannel } from '@/hooks/useChannel';
 import {
   message,
   type FormProps,
   type RadioChangeEvent,
   type UploadProps,
 } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // 频道列表类型
 export type Channel = {
@@ -15,24 +16,7 @@ export type Channel = {
 
 // 用于管理发布流程的自定义钩子
 export function usePublish() {
-  const [channels, setChannels] = useState<Channel[]>([]);
-
-  // 从API获取频道列表
-  async function fetchChannelList() {
-    try {
-      const res = await getChannelAPI();
-      setChannels(res.data.channels);
-    } catch (error) {
-      message.error('获取频道列表失败');
-    }
-  }
-
-  // 组件挂载时获取频道列表
-  useEffect(() => {
-    fetchChannelList();
-    // 空依赖数组确保这个效果只在挂载时运行一次
-  }, []);
-
+  const { channels } = useChannel();
   return { channels };
 }
 

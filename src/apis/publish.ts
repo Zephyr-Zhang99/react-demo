@@ -1,4 +1,4 @@
-import type { ReqData } from '@/pages/Publish/utils';
+import type { ReqData } from '@/pages/Publish/hooks';
 import { request } from '@/utils';
 
 // 获取频道列表
@@ -15,5 +15,22 @@ export function createArticleAPI(data: ReqData) {
     url: `/mp/articles?draft=false`,
     method: 'POST',
     data,
+  });
+}
+
+// 获取文章列表
+export function getArticleListAPI(params: any) {
+  return request({
+    url: `/mp/articles`,
+    method: 'GET',
+    params,
+  });
+}
+
+// 删除文章
+export function deleteArticleAPI(id: number) {
+  return request({
+    url: `/mp/articles/${id}`,
+    method: 'DELETE',
   });
 }

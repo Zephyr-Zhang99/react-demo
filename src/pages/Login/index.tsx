@@ -1,8 +1,8 @@
 import logo from '@/assets/logo.png';
 import { Button, Card, Form, Input } from 'antd';
 
+import { useLogin, validationRules } from './hooks';
 import './index.scss';
-import { useLogin, validationRules } from './utils';
 const Login = () => {
   const { onFinish } = useLogin();
   return (

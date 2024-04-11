@@ -1,4 +1,4 @@
-import type { FieldType } from '@/pages/Login/utils';
+import type { FieldType } from '@/pages/Login/hooks';
 import { request } from '@/utils';
 
 // 登录

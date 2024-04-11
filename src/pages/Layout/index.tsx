@@ -3,8 +3,8 @@ import { Layout, Menu, Popconfirm } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { Header } from 'antd/es/layout/layout';
 import { Outlet } from 'react-router-dom';
+import { items, useLayout } from './hooks';
 import './index.scss';
-import { items, useLayout } from './utils';
 const GeekLayout = () => {
   const { loginOut, selectedKeys, name, menuClick } = useLayout();
   return (

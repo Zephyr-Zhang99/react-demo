@@ -1,5 +1,5 @@
 import { getProfileAPI, loginAPI } from '@/apis/user';
-import type { FieldType } from '@/pages/Login/utils';
+import type { FieldType } from '@/pages/Login/hooks';
 import { setToken as _setToken, removeToken } from '@/utils';
 import { createSlice } from '@reduxjs/toolkit';
 const userStore = createSlice({
